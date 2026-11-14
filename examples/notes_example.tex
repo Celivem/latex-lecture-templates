@@ -1,0 +1,125 @@
+% !TEX program = xelatex
+% 講義版型範例：在 examples/ 資料夾裡編譯
+%   latexmk -xelatex notes_example.tex
+\documentclass[10pt,a4paper]{article}
+
+% 字型資料夾（放 NotoSansTC-Regular.ttf、NotoSansTC-Bold.ttf），要在載入版型前設定
+\providecommand{\codexfontpath}{../fonts/}
+% 頁首左側的課程名稱
+\newcommand{\coursename}{數學物理講義（範例）}
+\input{../styles/codex_notes.tex}
+
+\setuplecture{1}{高斯積分}
+\coursekeepblocks
+
+\begin{document}
+\thispagestyle{empty}
+\lecturehead{\coursename\quad L01}{高斯積分}
+\tableofcontents
+
+\plainsection{引導}
+\chaptergoal{函數 $\e^{-x^2}$ 沒有初等的反導函數，為什麼它在整條實數線上的積分卻能精確算出來？算出來之後，常態分佈的平均值與變異數又要怎麼求？}
+
+統計物理裡的 Maxwell 速度分佈、量子力學裡的高斯波包、量測誤差的常態分佈，背後都是同一個形狀 $\e^{-ax^2}$。要從這些分佈算出任何物理量，第一步都是積分它。但是我們在微積分課學過的換元與分部積分，對 $\e^{-x^2}$ 都行不通：它的反導函數不是初等函數。這一章要看的是，雖然不定積分寫不出來，定積分仍然可以精確算出。
+
+\booksection{高斯函數}{The Gaussian function}
+
+先把要處理的函數定下來。
+
+\begin{definition}[高斯函數]
+對 $a>0$，稱
+\[
+  g_a(x)=\e^{-ax^2},\qquad -\infty<x<\infty
+\]
+為 Gaussian function（高斯函數）。參數 $a$ 決定寬度：$a$ 越大，函數越窄。
+\end{definition}
+
+圖~\ref{fig:gauss} 畫出三個不同 $a$ 的高斯函數。三條曲線在 $x=0$ 的高度都是 1，衰減的快慢由 $a$ 決定。
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.62\linewidth,height=4.6cm,axis lines=left,
+  xlabel={$x$},ylabel={$g_a(x)$},xmin=-3,xmax=3,ymin=0,ymax=1.1,
+  legend style={draw=none,font=\small},legend pos=north east,
+  every axis plot/.append style={thick,samples=120,domain=-3:3}]
+\addplot[qblue]{exp(-0.5*x^2)}; \addlegendentry{$a=1/2$}
+\addplot[qorange]{exp(-x^2)}; \addlegendentry{$a=1$}
+\addplot[qgreen]{exp(-3*x^2)}; \addlegendentry{$a=3$}
+\end{axis}
+\end{tikzpicture}
+\caption{三個不同寬度的高斯函數。}
+\label{fig:gauss}
+\end{figure}
+
+\booksection{全實數線上的積分}{Integral over the real line}
+
+我們要算的是 $I=\int_{-\infty}^{\infty}\e^{-x^2}\dd x$。直接積不出來，但它的平方可以：$I^2$ 是平面上的二重積分，而二重積分可以換成極座標。
+
+\begin{theorem}[高斯積分]
+\label{thm:gauss}
+對 $a>0$，
+\[
+  \int_{-\infty}^{\infty}\e^{-ax^2}\dd x=\sqrt{\frac{\pi}{a}} .
+\]
+\end{theorem}
+
+\begin{derivation}[平方後換成極座標]
+先看 $a=1$。把 $I$ 乘上自己，第二個因子的積分變數改名為 $y$：
+\[
+  I^2=\int_{-\infty}^{\infty}\e^{-x^2}\dd x\int_{-\infty}^{\infty}\e^{-y^2}\dd y
+     =\iint_{\mathbb R^2}\e^{-(x^2+y^2)}\dd x\dd y .
+\]
+被積函數只依賴 $r^2=x^2+y^2$，所以改用極座標，面積元素 $\dd x\dd y=r\dd r\dd\theta$：
+\[
+  I^2=\int_0^{2\pi}\dd\theta\int_0^\infty \e^{-r^2}\,r\dd r
+     =2\pi\cdot\frac12=\pi .
+\]
+多出來的 $r$ 正是讓積分變得容易的原因：$r\e^{-r^2}$ 的反導函數是 $-\tfrac12\e^{-r^2}$。$I>0$，所以 $I=\sqrt\pi$。一般的 $a$ 用 $u=\sqrt a\,x$ 換元即得。
+\end{derivation}
+
+\keyresult{\int_{-\infty}^{\infty}\e^{-ax^2}\dd x=\sqrt{\frac{\pi}{a}}}
+
+\begin{note}
+這個技巧只對全實數線（或對稱的無限區間）有效。有限區間 $\int_0^b\e^{-x^2}\dd x$ 沒有封閉形式，要用 error function（誤差函數）$\operatorname{erf}$ 表示。
+\end{note}
+
+\booksection{二階動差}{Second moment}
+
+有了定理~\ref{thm:gauss}，常態分佈的變異數也能直接算出。
+
+\begin{example}[常態分佈的變異數]
+\label{ex:variance}
+機率密度 $p(x)=\dfrac{1}{\sqrt{2\pi}\,\sigma}\e^{-x^2/2\sigma^2}$ 的平均值為 0。求 $\avg{x^2}$。
+\end{example}
+\begin{solution}
+把定理~\ref{thm:gauss} 的結果對 $a$ 微分。左邊在積分號下微分，帶下來一個 $-x^2$：
+\[
+  \int_{-\infty}^{\infty}x^2\e^{-ax^2}\dd x=-\frac{\dd}{\dd a}\sqrt{\frac{\pi}{a}}=\frac{\sqrt\pi}{2}\,a^{-3/2} .
+\]
+代入 $a=1/2\sigma^2$，再乘上歸一化常數，得到 $\avg{x^2}=\sigma^2$。所以參數 $\sigma$ 正是分佈的標準差。
+\end{solution}
+
+例~\ref{ex:variance} 用的「對參數微分」是很常用的技巧：同一個積分公式，可以一次產生所有偶數次方的動差。
+
+\begin{extension}[多維推廣]
+在 $n$ 維空間，$\int_{\mathbb R^n}\e^{-a|\mathbf x|^2}\dd^n x=(\pi/a)^{n/2}$，因為被積函數可以分解成 $n$ 個一維高斯函數的乘積。
+\end{extension}
+
+\plainsection{總結}
+
+這一章用「平方後換成極座標」算出了沒有初等反導函數的高斯積分，再用對參數微分得到常態分佈的變異數。
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+結果 & 說明 \\
+\midrule
+$\int_{-\infty}^{\infty}\e^{-ax^2}\dd x=\sqrt{\pi/a}$ & $a>0$；全實數線 \\
+$\int_{-\infty}^{\infty}x^2\e^{-ax^2}\dd x=\tfrac{\sqrt\pi}{2}a^{-3/2}$ & 對 $a$ 微分得到 \\
+$\avg{x^2}=\sigma^2$ & 常態分佈的變異數 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}

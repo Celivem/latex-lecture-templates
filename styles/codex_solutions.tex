@@ -1,0 +1,134 @@
+% codex_solutions.tex — 工作區共用的習題詳解版型（2026-10-09 從量導 v3 詳解抽出）
+% 用於：量導 quantum_exercises_v3.sty、Neamen neamen_exercises_v4.sty、熱物理 thermal_solutions_v2.sty。
+% 各專案的 .sty 只放記號巨集與版面差異，並用下面這行載入本檔：
+%   \IfFileExists{codex_solutions.tex}{\input{codex_solutions.tex}}{\input{"D:/Codex workplace/_templates/styles/codex_solutions.tex"}}
+% （Windows 走後者的絕對路徑；Linux 沙箱的 texbuild.sh 與雲端會把本資料夾放進 TEXMFHOME，走前者。）
+% 版面：A4、10pt（主檔 \documentclass[10pt,a4paper]{article}）、四邊 2cm、行距 1.3、Noto Sans TC；
+% 深藍標題、淺灰英文題目框（TeX Gyre Termes）、淺橘結果框。字型設定在建置資料夾的 fonts.tex。
+\RequirePackage[no-math]{fontspec}
+\RequirePackage{xeCJK}
+% 英文撇號改回西文字元並取比例寬字形（原因見 codex_notes.tex 同一段；英文題目框的 Termes 本來就是比例寬）。2026-10-22
+\defaultfontfeatures+[\rmfamily]{RawFeature=+pwid}
+\xeCJKDeclareCharClass{Default}{"2018,"2019}
+\input{fonts.tex}
+\RequirePackage{amsmath,amssymb,amsthm,mathtools}
+\RequirePackage[a4paper,margin=2cm]{geometry}
+\RequirePackage{graphicx,float,booktabs,longtable,array,tabularx}  % float 要在 setspace 之前載入（[H] 圖內單倍行距）
+\RequirePackage{enumitem,setspace,xcolor,fancyhdr,needspace}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{titlesec,titletoc}
+% 專案要在 hyperref 之前多載的套件：載入本檔前 \def\codexsolutionsprehyperref{\RequirePackage{...}}
+\csname codexsolutionsprehyperref\endcsname
+\RequirePackage[unicode]{hyperref}
+
+% ---- 色票 ----
+\definecolor{qblue}{HTML}{1D5FA8}    % 章標題、目錄、條列符號
+\definecolor{qnavy}{HTML}{173D6B}    % 題目標題、小標
+\definecolor{qorange}{HTML}{EB6834}  % 結果框
+\definecolor{qorangebg}{HTML}{FFF4E8}
+\definecolor{qgraybg}{HTML}{F3F4F6}  % 原文框
+\definecolor{qgraybar}{HTML}{8A929C}
+\definecolor{qrule}{HTML}{D8DDE3}    % 細分隔線
+\definecolor{qmuted}{HTML}{6B7280}   % 次要文字
+\definecolor{qtext}{HTML}{1F2329}    % 內文
+\hypersetup{colorlinks=true,linkcolor=qnavy,urlcolor=qblue,citecolor=qblue}
+
+% ---- 字型：英文題目用襯線字，與中文詳解區隔 ----
+\newfontfamily\statementfont{texgyretermes-regular.otf}[
+  BoldFont=texgyretermes-bold.otf,ItalicFont=texgyretermes-italic.otf,
+  BoldItalicFont=texgyretermes-bolditalic.otf,Scale=1.04,Ligatures=TeX]
+
+% ---- 段落 ----
+\setstretch{1.3}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\headheight}{16pt}
+\setlength{\headsep}{0.45cm}
+\setlength{\footskip}{1cm}
+\setlist{itemsep=0.2em,topsep=0.3em}
+\setlist[itemize]{label=\textcolor{qblue}{\small\textbullet}}
+\setlist[enumerate]{label=\textcolor{qblue}{\arabic*.}}
+\renewcommand{\arraystretch}{1.16}
+\allowdisplaybreaks[2]
+\raggedbottom
+\emergencystretch=3em
+\AtBeginDocument{\color{qtext}}
+
+% ---- 頁首頁尾 ----
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\color{qmuted}\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\newcommand{\courseheader}[2]{%
+  \fancyhead[L]{\color{qmuted}\small #1}\fancyhead[R]{\color{qmuted}\small #2}}
+
+% ---- 標題 ----
+% 題目標題：\problem{2.8}{指數波函數的動量空間表示}
+\titleformat{\section}[block]{\color{qnavy}\large\bfseries\boldmath}{}{0pt}{}
+\titlespacing*{\section}{0pt}{2.4em}{0.7em}
+% 詳解內的小標（思路、步驟一、檢查……）
+\titleformat{\subsection}{\color{qnavy}\bfseries\boldmath}{}{0pt}{}
+\titlespacing*{\subsection}{0pt}{1.1em}{0.2em}
+\titleformat{\subsubsection}{\color{qnavy}\bfseries\boldmath}{}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{0.8em}{0.2em}
+\titleformat{\paragraph}[runin]{\color{qnavy}\bfseries}{}{0pt}{}
+\titlespacing*{\paragraph}{0pt}{0.6em}{0.6em}
+
+\newcommand{\problem}[2]{%
+  \Needspace{10\baselineskip}%
+  \section*{{\color{qmuted}\mdseries Problem #1}\hspace{0.8em}#2}%
+  \addcontentsline{toc}{subsection}{Problem #1\hspace{0.8em}#2}}
+
+% 章首：\chapterhead{CHAPTER 2}{第 2 章　波函數與機率}
+\newcommand{\chapterhead}[2]{%
+  \clearpage
+  {\color{qmuted}\small #1\par}\vspace{2pt}
+  {\color{qnavy}\fontsize{16pt}{21pt}\selectfont\bfseries #2\par}\vspace{6pt}
+  {\color{qrule}\rule{\linewidth}{0.6pt}\par}\vspace{0.4em}
+  \addcontentsline{toc}{section}{#2}}
+
+% ---- 目錄 ----
+\renewcommand{\contentsname}{目錄}
+\titlecontents{section}[0pt]{\addvspace{0.8em}\color{qblue}\bfseries}{}{}
+  {\titlerule*[0.6pc]{.}\contentspage}
+\titlecontents{subsection}[1.5em]{\color{qtext}}{}{}
+  {\color{qmuted}\titlerule*[0.6pc]{.}\contentspage}
+% 頁碼欄放得下三位數（article 預設 1.55em，詳解冊過 100 頁時每行目錄溢出 1–2pt；DE CH10、CH11）。2026-10-27
+\makeatletter
+\renewcommand{\@pnumwidth}{2.2em}
+\renewcommand{\@tocrmarg}{3em}
+\makeatother
+
+% ---- 框 ----
+\newenvironment{chapterintro}{\par\color{qmuted}}{\par\vspace{0.4em}}
+
+% 題目（英文原題）。跨頁時續段右上角標「（續）」，免得看成新的一題（DE CH11 版面審查）。2026-10-27
+\newtcolorbox{statement}{enhanced,breakable,frame hidden,arc=2pt,
+  colback=qgraybg,left=10pt,right=10pt,top=6pt,bottom=6pt,
+  before skip=0.2em,after skip=0.9em,before upper={\statementfont},
+  overlay middle and last={\node[anchor=north east,inner sep=0pt,font=\scriptsize,text=qmuted]
+    at ([xshift=-6pt,yshift=-4pt]frame.north east) {（續）};}}
+
+% 結果框；預設無標籤，需要時 \begin{resultbox}[答案 (b)]
+\newtcolorbox{resultbox}[1][]{enhanced,frame hidden,sharp corners,
+  colback=qorangebg,borderline west={2pt}{0pt}{qorange},
+  left=10pt,right=10pt,top=5pt,bottom=5pt,
+  before skip=0.6em,after skip=0.8em,
+  before upper={\if\relax\detokenize{#1}\relax\else{\small\bfseries\color{qorange}#1}\par\fi}}
+
+% 提醒或補充
+\newtcolorbox{notebox}[1][說明]{enhanced,breakable,frame hidden,sharp corners,
+  colback=qblue!5,borderline west={2pt}{0pt}{qblue},
+  left=11pt,right=11pt,top=6pt,bottom=6pt,
+  before upper={{\small\bfseries\color{qblue}#1}\par}}
+
+\tcbset{highlight math style={enhanced,frame hidden,sharp corners,colback=qorangebg,
+  borderline west={2pt}{0pt}{qorange},left=6pt,right=6pt,top=3pt,bottom=3pt}}
+
+% ---- 數學巨集（各專案共用的兩個；其餘記號在專案的 .sty）----
+\newcommand{\dd}{\mathop{}\!\mathrm{d}}
+\newcommand{\e}{\mathrm{e}}
+% \keyresult{...} 的內容當文字排（數學用 $...$），放進結果框；已在數學環境內時改為橘色底
+\newcommand{\keyresult}[1]{%
+  \ifmmode\tcbhighmath{\displaystyle #1}%
+  \else\begin{resultbox}{\centering #1\par}\end{resultbox}\fi}

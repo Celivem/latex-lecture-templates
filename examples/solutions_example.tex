@@ -1,0 +1,72 @@
+% !TEX program = xelatex
+% 詳解版型範例：在 examples/ 資料夾裡編譯
+%   latexmk -xelatex solutions_example.tex
+% 詳解版型的字型設定在同資料夾的 fonts.tex。
+\documentclass[10pt,a4paper]{article}
+
+\providecommand{\codexfontpath}{../fonts/}
+\input{../styles/codex_solutions.tex}
+
+\courseheader{數學物理習題詳解（範例）}{Chapter 1}
+
+\begin{document}
+\tableofcontents
+\chapterhead{CHAPTER 1}{第 1 章　高斯積分}
+
+\begin{chapterintro}
+本章的題目都用到高斯積分 $\int_{-\infty}^{\infty}\e^{-ax^2}\dd x=\sqrt{\pi/a}$（$a>0$），推導見講義第 1 章，下面直接引用。
+\end{chapterintro}
+
+\problem{1.1}{高斯波包的歸一化}
+
+\begin{statement}
+A wave function is given by $\psi(x)=A\,\e^{-x^2/4\sigma^2}$, where $\sigma>0$.
+\begin{enumerate}
+  \item[(a)] Find the normalization constant $A$ (take $A$ real and positive).
+  \item[(b)] Show that $\langle x^2\rangle=\sigma^2$.
+\end{enumerate}
+\end{statement}
+
+\subsection*{思路}
+歸一化要求 $\int|\psi|^2\dd x=1$。$|\psi|^2$ 本身就是高斯函數，指數裡的係數是 $a=1/2\sigma^2$，所以可以直接套高斯積分。
+
+\subsection*{(a) 歸一化常數}
+$A$ 是實數，$|\psi|^2=A^2\e^{-x^2/2\sigma^2}$。代入高斯積分，$a=1/2\sigma^2$：
+\[
+  1=\int_{-\infty}^{\infty}|\psi|^2\dd x=A^2\sqrt{2\pi}\,\sigma .
+\]
+\keyresult{$A=(2\pi\sigma^2)^{-1/4}$}
+
+\subsection*{(b) 二階動差}
+$|\psi|^2$ 正是標準差為 $\sigma$ 的常態分佈，所以 $\langle x^2\rangle$ 就是它的變異數。直接計算時，對高斯積分的參數 $a$ 微分：
+\[
+  \int_{-\infty}^{\infty}x^2\e^{-ax^2}\dd x=\frac{\sqrt\pi}{2}\,a^{-3/2},
+  \qquad
+  \langle x^2\rangle=A^2\cdot\frac{\sqrt\pi}{2}\,(2\sigma^2)^{3/2}=\sigma^2 .
+\]
+\begin{resultbox}[答案 (b)]
+$\langle x^2\rangle=\sigma^2$
+\end{resultbox}
+
+\begin{notebox}
+指數寫成 $x^2/4\sigma^2$ 而不是 $x^2/2\sigma^2$，是因為機率密度是 $|\psi|^2$：平方之後指數加倍，$|\psi|^2$ 的標準差才是 $\sigma$。
+\end{notebox}
+
+\problem{1.2}{有限區間的估計}
+
+\begin{statement}
+Estimate $\displaystyle\int_{-3}^{3}\e^{-x^2}\dd x$ to three significant figures without numerical integration.
+\end{statement}
+
+\subsection*{思路}
+全實數線的積分是 $\sqrt\pi$。從 $3$ 到 $\infty$ 的尾巴非常小，只要估出尾巴的上界，就知道它對三位有效數字有沒有影響。
+
+\subsection*{估計尾巴}
+在 $x\ge 3$ 時 $x/3\ge1$，所以
+\[
+  \int_3^\infty\e^{-x^2}\dd x\le\int_3^\infty\frac{x}{3}\,\e^{-x^2}\dd x=\frac{\e^{-9}}{6}\approx 2\times10^{-5}.
+\]
+兩側的尾巴加起來不到 $5\times10^{-5}$，不影響第三位有效數字。
+\keyresult{$\displaystyle\int_{-3}^{3}\e^{-x^2}\dd x\approx\sqrt\pi\approx 1.77$}
+
+\end{document}

@@ -1,0 +1,231 @@
+% codex_notes.tex — 工作區共用的講義版型 v2（2026-10-09 從量導講義 v2 抽出）
+% 用於：量導 lectures/template/quantum_notes_v2.sty、熱物理 lectures/template/thermal_notes_v2.sty。
+% （群論 kuo_notes_v2.sty 是數學講義的變體，差異多，仍獨立。）
+% 各專案的 .sty 先設參數，再用下面這行載入本檔，之後只放記號巨集與專案特有的區塊：
+%   \IfFileExists{codex_notes.tex}{\input{codex_notes.tex}}{\input{"D:/Codex workplace/_templates/styles/codex_notes.tex"}}
+% 參數（都可省略）：\codexsecsep（節號分隔，預設 -）、\codexlecturetag{章號}（頁首右側，預設 L03）、\codextoclabelwidth（預設 2.6em）。
+% 版面：A4、10pt（主檔 \documentclass[10pt,a4paper]{article}）、四邊 2cm、行距 1.3、Noto Sans TC、段落不縮排；深藍標題、藍色節號、淺橘重點結果。
+% 巨集：\setuplecture{章號}{章名}、\lecturehead{小字}{章名}、\booksection{中文}{English}、\plainsection、\chaptergoal、\keyresult（只放數學式）、
+% definition／theorem／note／derivation／example／solution／extension[標題]、\coursekeepblocks；記號 \dd、\e、\avg、\Order。
+\RequirePackage[no-math]{fontspec}
+\RequirePackage{xeCJK}
+% 英文撇號：' 經 TeX 連字變成 U+2019，xeCJK 預設把 ‘’ 當全形標點，Noto Sans TC 的這兩個字形也是全寬，
+% Ampère's 的撇號後面因此多一段空隙。把 ‘’ 改回西文字元，主字型加 pwid 取比例寬字形（只作用於西文字型，
+% 中文標點由 CJK 字型排，不受影響）。中文引號用「」，“” 維持原狀。2026-10-22
+\defaultfontfeatures+[\rmfamily]{RawFeature=+pwid}
+\xeCJKDeclareCharClass{Default}{"2018,"2019}
+% 字型資料夾：載入本檔前 \def\codexfontpath{<資料夾>/} 可改；設成空白則依檔名在 TeX 搜尋路徑與目前資料夾找。2026-11-15
+\providecommand{\codexfontpath}{D:/Codex workplace/Noto_Sans_TC/static/}
+\setmainfont{NotoSansTC-Regular.ttf}[
+  Path=\codexfontpath,
+  BoldFont=NotoSansTC-Bold.ttf,
+  ItalicFont=NotoSansTC-Regular.ttf,
+  BoldItalicFont=NotoSansTC-Bold.ttf
+]
+\setCJKmainfont{NotoSansTC-Regular.ttf}[
+  Path=\codexfontpath,
+  BoldFont=NotoSansTC-Bold.ttf,
+  ItalicFont=NotoSansTC-Regular.ttf,
+  BoldItalicFont=NotoSansTC-Bold.ttf
+]
+\setmonofont{NotoSansTC-Regular.ttf}[
+  Path=\codexfontpath,
+  BoldFont=NotoSansTC-Bold.ttf
+]
+\setCJKmonofont{NotoSansTC-Regular.ttf}[
+  Path=\codexfontpath,
+  BoldFont=NotoSansTC-Bold.ttf
+]
+\RequirePackage{amsmath,amssymb,amsthm,mathtools}
+\RequirePackage[a4paper,margin=2cm]{geometry}
+\RequirePackage{booktabs,longtable,array,tabularx}
+\RequirePackage{graphicx,float}
+\RequirePackage{enumitem,setspace,xcolor,fancyhdr,needspace,etoolbox}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{titlesec,titletoc}
+\RequirePackage{caption}
+\RequirePackage{tikz,pgfplots}
+\RequirePackage[unicode]{hyperref}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta,calc,positioning,decorations.pathreplacing}
+\usepgfplotslibrary{fillbetween}
+
+% ---- 色票（與共用詳解版型相同，另加綠、紫各一）----
+\definecolor{qblue}{HTML}{1D5FA8}
+\definecolor{qnavy}{HTML}{173D6B}
+\definecolor{qorange}{HTML}{EB6834}
+\definecolor{qorangebg}{HTML}{FFF4E8}
+\definecolor{qgraybg}{HTML}{F3F4F6}
+\definecolor{qrule}{HTML}{D8DDE3}
+\definecolor{qmuted}{HTML}{6B7280}
+\definecolor{qtext}{HTML}{1F2329}
+\definecolor{qgreen}{HTML}{2E7D4F}
+\definecolor{qpurple}{HTML}{6B3FA0}
+% 舊版型用到的灰色名稱（圖檔可能引用）
+\colorlet{qgray}{qmuted}
+\colorlet{qlight}{qgraybg}
+\hypersetup{colorlinks=true,linkcolor=qnavy,urlcolor=qblue,citecolor=qblue}
+
+% ---- 段落 ----
+\setstretch{1.3}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\headheight}{16pt}
+\setlength{\headsep}{0.45cm}
+\setlength{\footskip}{1cm}
+\setlist{itemsep=0.2em,topsep=0.3em}
+\setlist[itemize]{label=\textcolor{qblue}{\small\textbullet}}
+\setlist[enumerate]{label=\textcolor{qblue}{\arabic*.}}
+\renewcommand{\arraystretch}{1.16}
+\allowdisplaybreaks[2]
+\raggedbottom
+\widowpenalty=10000
+\clubpenalty=10000
+\emergencystretch=3em
+\AtBeginDocument{\color{qtext}}
+
+% ---- 圖說 ----
+\renewcommand{\figurename}{圖}
+\renewcommand{\tablename}{表}
+\captionsetup{font={small,color=qmuted},labelfont={bf,color=qnavy},labelsep=quad,
+  justification=justified,singlelinecheck=true,skip=6pt}
+
+% ---- 章設定：節號 3-1（分隔符 \codexsecsep）、式號與區塊號 (3.k)；頁首右側 \codexlecturetag{章號}　章名 ----
+\providecommand{\codexsecsep}{-}
+\providecommand{\codexlecturetag}[1]{L\ifnum#1<10 0\fi#1}
+\providecommand{\codextoclabelwidth}{2.6em}
+\newcommand{\lecturechapter}{0}
+\newcommand{\lecturetitle}{}
+\newcommand{\setuplecture}[2]{%
+  \renewcommand{\lecturechapter}{#1}%
+  \renewcommand{\lecturetitle}{#2}%
+  \renewcommand{\thesection}{#1\codexsecsep\arabic{section}}%
+  \renewcommand{\theequation}{#1.\arabic{equation}}%
+  \renewcommand{\thefigure}{#1.\arabic{figure}}%
+  \renewcommand{\thetable}{#1.\arabic{table}}%
+  \fancyhead[L]{\color{qmuted}\small\coursename}%
+  \fancyhead[R]{\color{qmuted}\small \codexlecturetag{#1}\quad #2}%
+}
+
+% ---- 頁首頁尾 ----
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\color{qmuted}\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+% ---- 標題 ----
+\titleformat{\section}[block]{\color{qnavy}\Large\bfseries\boldmath}
+  {\textcolor{qblue}{\thesection}}{0.8em}{}
+\titleformat{name=\section,numberless}[block]{\color{qnavy}\Large\bfseries\boldmath}{}{0pt}{}
+\titlespacing*{\section}{0pt}{2.2em}{0.8em}
+\titleformat{\subsection}{\color{qnavy}\normalsize\bfseries\boldmath}{}{0pt}{}
+\titlespacing*{\subsection}{0pt}{1.2em}{0.25em}
+
+% 課本節：\booksection{中文標題}{English title}；英文副標放同一行，放不下整段換行，不斷字
+\newsavebox{\qsubtitlebox}
+\DeclareRobustCommand{\qbooksubtitle}[1]{%
+  \sbox{\qsubtitlebox}{\normalfont\small(#1)}%
+  \ifdim\wd\qsubtitlebox<\dimexpr\linewidth-4em\relax
+    \hskip 0pt plus 1fil\penalty0\hskip 0.8em plus -1fil\relax
+    {\normalfont\small\color{qmuted}#1}%
+  \else
+    \enspace{\normalfont\small\color{qmuted}
+      \ifcsname l@nohyphenation\endcsname\language\csname l@nohyphenation\endcsname\fi
+      #1}%
+  \fi}
+\newcommand{\booksection}[2]{\section[#1]{#1\qbooksubtitle{#2}}}
+\newcommand{\plainsection}[1]{\section*{#1}\addcontentsline{toc}{section}{#1}}
+
+% ---- 目錄 ----
+\renewcommand{\contentsname}{目錄}
+\setcounter{tocdepth}{1}
+\titlecontents{section}[\codextoclabelwidth]{\addvspace{0.35em}\color{qtext}}
+  {\contentslabel[\textcolor{qblue}{\bfseries\thecontentslabel}]{\codextoclabelwidth}}{}
+  {\color{qmuted}\titlerule*[0.6pc]{.}\contentspage}
+
+% ---- 章首標頭（取代 \maketitle）----
+\newcommand{\lecturehead}[2]{%
+  {\color{qmuted}\small #1\par}\vspace{2pt}
+  {\color{qnavy}\fontsize{18pt}{24pt}\selectfont\bfseries #2\par}\vspace{6pt}
+  {\color{qrule}\rule{\linewidth}{0.6pt}\par}\vspace{0.6em}}
+
+% ---- 記號巨集（共用的；其餘在專案的 .sty）----
+\newcommand{\dd}{\mathop{}\!\mathrm{d}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\avg}[1]{\left\langle #1\right\rangle}
+\newcommand{\Order}{\mathcal O}
+
+% ---- 區塊共用計數器：定義、定理、推導、例題共用 (3.k) ----
+\newcounter{qblock}
+\renewcommand{\theqblock}{\lecturechapter.\arabic{qblock}}
+\newcommand{\qtitle}[1]{\ifstrempty{#1}{}{\enspace#1}}
+
+% ---- 不讓標題落在頁底 ----
+\makeatletter
+\newcommand{\qblockspace}[1]{\if@nobreak\else\Needspace*{#1}\fi}
+\makeatother
+\newcommand{\coursekeepblocks}{%
+  \pretocmd{\section}{\qblockspace{12\baselineskip}}{}{}%
+  \pretocmd{\subsection}{\qblockspace{8\baselineskip}}{}{}%
+}
+
+% ---- 區塊 ----
+% 框內 \label 記到區塊編號：tcolorbox 在 \sbox 裡做 \refstepcounter，\@currentlabel 出了那個群組就還原，
+% 框內的 \label 因此記成外層的小節號（DE L02 遇過，2026-10-21）。\qsetlabel 在框的正文開頭重設一次；
+% 自己寫 before upper 的編號框要把它放進去。沒有編號的框不受影響。
+\makeatletter
+\newcommand{\qsetlabel}{\ifdefined\tcbcounter\ifx\tcbcounter\@empty\else
+  \protected@edef\@currentlabel{\lecturechapter.\thetcbcounter}\fi\fi}
+\makeatother
+\tcbset{qbase/.style={enhanced,breakable,arc=2pt,boxrule=0.6pt,
+  left=8pt,right=8pt,top=5pt,bottom=5pt,before skip=0.9em,after skip=0.9em,
+  fonttitle=\bfseries\small,toptitle=2pt,bottomtitle=2pt,
+  before upper={\setlength{\parskip}{0.45em}\qsetlabel}}}
+\tcbset{qbar/.style={enhanced,breakable,frame hidden,sharp corners,
+  left=10pt,right=8pt,top=5pt,bottom=5pt,before skip=0.8em,after skip=0.8em,
+  before upper={\setlength{\parskip}{0.45em}\qsetlabel}}}
+\newtcolorbox[use counter=qblock]{definition}[1][]{qbase,
+  colframe=qblue,colback=qblue!4,coltitle=white,colbacktitle=qblue,
+  title={定義 \lecturechapter.\thetcbcounter\qtitle{#1}}}
+\newtcolorbox[use counter=qblock]{theorem}[1][]{qbase,
+  colframe=qpurple,colback=qpurple!4,coltitle=white,colbacktitle=qpurple,
+  title={定理 \lecturechapter.\thetcbcounter\qtitle{#1}}}
+\newtcolorbox{note}[1][]{qbase,
+  colframe=qorange,colback=qorangebg,coltitle=white,colbacktitle=qorange,
+  title={注意\qtitle{#1}}}
+\newtcolorbox[use counter=qblock]{derivation}[1][]{qbar,colback=white,top=1pt,bottom=1pt,
+  borderline west={1.2pt}{0pt}{qrule},
+  before upper={\setlength{\parskip}{0.45em}\qsetlabel{\small\bfseries\color{qnavy}推導 \lecturechapter.\thetcbcounter\qtitle{#1}}\par}}
+\newtcolorbox[use counter=qblock]{example}[1][]{qbar,colback=white,top=1pt,bottom=1pt,
+  borderline west={1.2pt}{0pt}{qgreen!60},
+  before upper={\setlength{\parskip}{0.45em}\qsetlabel{\small\bfseries\color{qgreen}例 \lecturechapter.\thetcbcounter\qtitle{#1}}\par}}
+\newtcolorbox{extension}[1][]{qbar,colback=qgraybg,fontupper=\small\color{qmuted},
+  before upper={{\bfseries 延伸\qtitle{#1}}\par}}
+% 重點結果：與詳解相同的淺橘底＋左側橘條
+\newtcolorbox{qresult}{enhanced,frame hidden,sharp corners,colback=qorangebg,
+  borderline west={2.2pt}{0pt}{qorange},left=10pt,right=10pt,top=4pt,bottom=4pt,
+  before skip=0.7em,after skip=0.7em,halign=center}
+\newcommand{\keyresult}[1]{\par\begin{qresult}\makebox[\linewidth]{$\displaystyle #1$}\end{qresult}}
+% 章首問題：淺灰底
+\newcommand{\chaptergoal}[1]{%
+  \begin{tcolorbox}[qbar,colback=qgraybg]{\small\bfseries\color{qnavy}本章問題}\par #1\end{tcolorbox}}
+
+% 例題的解：接在 example 之後，綠色小標，不加框
+\newenvironment{solution}
+  {\par\smallskip\noindent{\small\bfseries\color{qgreen}解}\enspace\ignorespaces}
+  {\par\medskip}
+% 例題、推導前留空間，避免小標落在頁底
+\BeforeBeginEnvironment{example}{\qblockspace{6\baselineskip}}
+\BeforeBeginEnvironment{derivation}{\qblockspace{6\baselineskip}}
+\BeforeBeginEnvironment{definition}{\qblockspace{5\baselineskip}}
+\BeforeBeginEnvironment{theorem}{\qblockspace{5\baselineskip}}
+% 可跨頁的框剛好在頁底結束時，xdvipdfmx 的顏色堆疊可能錯位，之後的正文變成白字
+% （Neamen L05_v1 遇過，2026-10-15）。框的環境群組結束後重設一次正文顏色；
+% 放在框的 after 鍵裡沒有用，因為群組結束時顏色又被恢復成錯位的狀態。
+\AfterEndEnvironment{definition}{\normalcolor}
+\AfterEndEnvironment{theorem}{\normalcolor}
+\AfterEndEnvironment{property}{\normalcolor}
+\AfterEndEnvironment{note}{\normalcolor}
+\AfterEndEnvironment{derivation}{\normalcolor}
+\AfterEndEnvironment{example}{\normalcolor}
+\AfterEndEnvironment{extension}{\normalcolor}
