@@ -287,7 +287,7 @@ A wave function is given by ...
 
 ## 版本
 
-各版本與變更內容見 [CHANGELOG.md](CHANGELOG.md)（英文）與 [Releases 頁面](https://github.com/Celivem/latex-lecture-templates/releases)。每個 release 都附上兩個範例的 PDF，不必安裝就能看到排版結果。要固定使用某個版本，從 release 下載原始碼壓縮檔，或切到它的 tag（例如 `git checkout v0.1.0`）。1.0.0 之前，環境與巨集的名稱在小版本之間仍可能變動，每一項都會記在變更紀錄裡。
+各版本與變更內容見 [CHANGELOG.md](CHANGELOG.md)（英文）與 [Releases 頁面](https://github.com/Celivem/latex-lecture-templates/releases)。本頁開頭的兩張預覽圖是兩個範例的第一頁。要固定使用某個版本，從 release 下載原始碼壓縮檔，或切到它的 tag（例如 `git checkout v0.1.0`）。1.0.0 之前，環境與巨集的名稱在小版本之間仍可能變動，每一項都會記在變更紀錄裡。
 
 ## 引用
 

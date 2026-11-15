@@ -287,7 +287,7 @@ There is no automated test suite. The check is to compile both examples (see [Qu
 
 ## Versions
 
-Released versions and their changes are listed in [CHANGELOG.md](CHANGELOG.md) and on the [releases page](https://github.com/Celivem/latex-lecture-templates/releases). Each release has the two example PDFs attached, so you can see the result without installing anything. To use a fixed version, download its source archive from the release or check out its tag (for example `git checkout v0.1.0`). Before 1.0.0 the names of environments and macros may still change between minor versions; the changelog lists every such change.
+Released versions and their changes are listed in [CHANGELOG.md](CHANGELOG.md) and on the [releases page](https://github.com/Celivem/latex-lecture-templates/releases). The preview images at the top of this page show page 1 of each example. To use a fixed version, download its source archive from the release or check out its tag (for example `git checkout v0.1.0`). Before 1.0.0 the names of environments and macros may still change between minor versions; the changelog lists every such change.
 
 ## Citing
 
