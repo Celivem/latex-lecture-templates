@@ -2,6 +2,8 @@
 
 [English](README.md) | **繁體中文**
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Release](https://img.shields.io/github/v/release/Celivem/latex-lecture-templates)](https://github.com/Celivem/latex-lecture-templates/releases) ![XeLaTeX](https://img.shields.io/badge/engine-XeLaTeX-blue.svg)
+
 兩套 XeLaTeX 版型，給繁體中文的理工科教材使用：
 
 - **`styles/codex_notes.tex`**：講義。章首標頭、帶英文副標的編號節標題、共用一組編號的定義／定理／推導／例題區塊、重點結果框、章首問題框、注意框與延伸框。
@@ -26,6 +28,8 @@
 - [專案結構](#專案結構)
 - [測試](#測試)
 - [疑難排解](#疑難排解)
+- [版本](#版本)
+- [引用](#引用)
 - [授權](#授權)
 
 ## 需要什麼
@@ -182,7 +186,7 @@ A wave function is given by ...
 |---|---|
 | `\dd` | 正體微分 d，間距正確：`\dd x` |
 | `\e` | 正體 e |
-| `\avg{x}` | 自動調整大小的 $\langle x\rangle$ |
+| `\avg{x}` | 自動調整大小的 $`\langle x\rangle`$ |
 | `\Order` | 表示數量級的花體 O |
 
 ## 詳解版型說明
@@ -281,6 +285,26 @@ A wave function is given by ...
 | 用 pdfLaTeX 時 `fontspec` 報錯 | 請用 XeLaTeX 編譯（`latexmk -xelatex`）。 |
 | 重新定義 `\codexlecturetag` 後頁首出錯 | 它必須接受一個參數（章號）。 |
 
+## 版本
+
+各版本與變更內容見 [CHANGELOG.md](CHANGELOG.md)（英文）與 [Releases 頁面](https://github.com/Celivem/latex-lecture-templates/releases)。每個 release 都附上兩個範例的 PDF，不必安裝就能看到排版結果。要固定使用某個版本，從 release 下載原始碼壓縮檔，或切到它的 tag（例如 `git checkout v0.1.0`）。1.0.0 之前，環境與巨集的名稱在小版本之間仍可能變動，每一項都會記在變更紀錄裡。
+
+## 引用
+
+不需要引用。如果你把版型用在公開的課程教材或論文中，想標示出處，GitHub 頁面右側的 **Cite this repository**（由 [CITATION.cff](CITATION.cff) 產生）提供 APA 與 BibTeX 格式：
+
+```bibtex
+@software{celivem_latex_lecture_templates,
+  author  = {Celivem},
+  title   = {latex-lecture-templates: XeLaTeX templates for Traditional Chinese science and engineering lecture notes and worked solutions},
+  version = {0.1.0},
+  year    = {2026},
+  url     = {https://github.com/Celivem/latex-lecture-templates}
+}
+```
+
 ## 授權
 
-版型與範例以 [MIT License](LICENSE) 釋出。Noto Sans TC 採 SIL Open Font License，需另外下載；TeX Gyre Termes 隨 TeX Live 散布。
+- **版型與範例**：[MIT License](LICENSE)。用版型寫出來的文件屬於你自己；只有在複製、散布版型檔本身時（例如轉貼 `styles/`），才需要附上 MIT 授權聲明。
+- **Noto Sans TC** 採 SIL Open Font License 1.1，沒有隨附，請另外下載（見[字型](#字型)）。OFL 允許把字型嵌入你產生的 PDF。
+- **TeX Gyre Termes**（英文題目使用）隨 TeX Live 以 GUST Font License 散布；版型載入的 LaTeX 套件也隨 TeX Live 提供，各自適用原本的授權，多數是 LaTeX Project Public License。

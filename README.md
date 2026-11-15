@@ -2,6 +2,8 @@
 
 **English** | [繁體中文](README.zh-TW.md)
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Release](https://img.shields.io/github/v/release/Celivem/latex-lecture-templates)](https://github.com/Celivem/latex-lecture-templates/releases) ![XeLaTeX](https://img.shields.io/badge/engine-XeLaTeX-blue.svg)
+
 Two XeLaTeX templates for Traditional Chinese science and engineering course materials:
 
 - **`styles/codex_notes.tex`** for lecture notes: chapter header, numbered sections with an English subtitle, definition / theorem / derivation / example blocks that share one numbering sequence, key-result boxes, a chapter-question box, notes and extension boxes.
@@ -26,6 +28,8 @@ Both share one look: A4, 10 pt `article`, 2 cm margins, line spacing 1.3, Noto S
 - [Project structure](#project-structure)
 - [Testing](#testing)
 - [Troubleshooting](#troubleshooting)
+- [Versions](#versions)
+- [Citing](#citing)
 - [License](#license)
 
 ## Requirements
@@ -182,7 +186,7 @@ Before `example` and `derivation` the template requires 6 lines of space, before
 |---|---|
 | `\dd` | Upright differential d with correct spacing: `\dd x` |
 | `\e` | Upright e |
-| `\avg{x}` | $\langle x\rangle$ with auto-sized brackets |
+| `\avg{x}` | $`\langle x\rangle`$ with auto-sized brackets |
 | `\Order` | Calligraphic O for order of magnitude |
 
 ## Worked solutions template reference
@@ -281,6 +285,26 @@ There is no automated test suite. The check is to compile both examples (see [Qu
 | Errors from `fontspec` under pdfLaTeX | Compile with XeLaTeX (`latexmk -xelatex`). |
 | Redefining `\codexlecturetag` breaks the header | It must take one argument (the chapter number). |
 
+## Versions
+
+Released versions and their changes are listed in [CHANGELOG.md](CHANGELOG.md) and on the [releases page](https://github.com/Celivem/latex-lecture-templates/releases). Each release has the two example PDFs attached, so you can see the result without installing anything. To use a fixed version, download its source archive from the release or check out its tag (for example `git checkout v0.1.0`). Before 1.0.0 the names of environments and macros may still change between minor versions; the changelog lists every such change.
+
+## Citing
+
+Citation is not required. If you use the templates for published course materials or a thesis and want to credit them, GitHub's **Cite this repository** button (from [CITATION.cff](CITATION.cff)) gives APA and BibTeX:
+
+```bibtex
+@software{celivem_latex_lecture_templates,
+  author  = {Celivem},
+  title   = {latex-lecture-templates: XeLaTeX templates for Traditional Chinese science and engineering lecture notes and worked solutions},
+  version = {0.1.0},
+  year    = {2026},
+  url     = {https://github.com/Celivem/latex-lecture-templates}
+}
+```
+
 ## License
 
-The templates and examples are released under the [MIT License](LICENSE). Noto Sans TC is licensed under the SIL Open Font License and must be downloaded separately; TeX Gyre Termes is distributed with TeX Live.
+- **Templates and examples**: [MIT License](LICENSE). Documents you write with the templates are yours; the MIT notice only has to accompany copies of the template files themselves (for example when you redistribute `styles/`).
+- **Noto Sans TC** is licensed under the SIL Open Font License 1.1 and is not included; download it separately (see [Fonts](#fonts)). The OFL allows embedding the font in the PDFs you produce.
+- **TeX Gyre Termes** (used for the English problem statements) is distributed with TeX Live under the GUST Font License; the LaTeX packages the templates load come with TeX Live under their own licenses, mostly the LaTeX Project Public License.

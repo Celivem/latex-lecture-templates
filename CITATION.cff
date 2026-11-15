@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use these templates in published course materials or a thesis, you may cite them as below. Citation is appreciated, not required."
+type: software
+title: "latex-lecture-templates: XeLaTeX templates for Traditional Chinese science and engineering lecture notes and worked solutions"
+abstract: >-
+  Two XeLaTeX templates for Traditional Chinese science and engineering course
+  materials: lecture notes with definition, theorem, derivation and example
+  blocks sharing one numbering sequence, and worked solutions with the
+  original English problem statement and Chinese solution text. Both use
+  Noto Sans TC and share one A4 layout.
+authors:
+  - alias: Celivem
+version: 0.1.0
+date-released: 2026-11-15
+license: MIT
+repository-code: "https://github.com/Celivem/latex-lecture-templates"
+url: "https://github.com/Celivem/latex-lecture-templates"
+keywords:
+  - LaTeX
+  - XeLaTeX
+  - xeCJK
+  - template
+  - lecture notes
+  - Traditional Chinese
